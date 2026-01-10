@@ -85,7 +85,7 @@ const filteredTools = computed(() => {
           Apps
         </div>
 
-        <NuxtLink
+        <nuxt-link
           v-for="tool in tools"
           :key="tool.route"
           :to="tool.route"
@@ -103,7 +103,7 @@ const filteredTools = computed(() => {
             class="text-xs font-bold uppercase tracking-widest group-hover:translate-x-1 transition-transform"
             >{{ tool.name }}</span
           >
-        </NuxtLink>
+        </nuxt-link>
       </nav>
 
       <!-- Footer -->
@@ -171,7 +171,7 @@ const filteredTools = computed(() => {
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           <!-- Cards -->
-          <NuxtLink
+          <nuxt-link
             v-for="(tool, index) in filteredTools"
             :key="index"
             :to="tool.route"
@@ -215,7 +215,7 @@ const filteredTools = computed(() => {
                 >→</span
               >
             </div>
-          </NuxtLink>
+          </nuxt-link>
 
           <!-- Coming Soon Card -->
           <div
