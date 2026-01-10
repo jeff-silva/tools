@@ -4,14 +4,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
-  modules: ["@nuxt/icon", "@nuxt/scripts"],
-
-  // modules: [
-  //   ["@nuxt/icon", {}],
-  //   ["@nuxt/scripts", {}],
-  //   ["@pinia/nuxt", {}],
-  //   ["@vueuse/nuxt", {}],
-  // ],
+  modules: [
+    ["@nuxt/icon", {}],
+    ["@nuxt/scripts", {}],
+    ["@vueuse/nuxt", {}],
+    ["@pinia/nuxt", {}],
+  ],
 
   app: {
     baseURL: "/tools/",
