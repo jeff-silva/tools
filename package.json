@@ -1,0 +1,22 @@
+{
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "Ferramentas Web",
+  "main": "index.js",
+  "scripts": {
+    "dev": "sh ./bin/dev.sh",
+    "build": "sh ./bin/build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeff-silva/tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jeff-silva/tools/issues"
+  },
+  "homepage": "https://github.com/jeff-silva/tools#readme"
+}
