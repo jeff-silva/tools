@@ -1,5 +1,13 @@
 <script setup>
-import { ref, onMounted, nextTick, watch } from "vue";
+definePageMeta({
+  title: "Excel to JSON",
+  description: "Conversor de planilhas para JSON",
+  icon: "ph:table-duotone",
+  menu: true,
+  tags: [],
+  badge: "V1.0",
+  color: "bg-emerald-500",
+});
 
 useHead({
   title: "Excel to JSON - Dashboard",
@@ -8,7 +16,6 @@ useHead({
       src: "https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js",
       defer: true,
     },
-    // renderjson for collapsible JSON view
     {
       src: "https://cdn.jsdelivr.net/npm/renderjson@1.4.0/renderjson.min.js",
       defer: true,
@@ -22,19 +29,16 @@ useHead({
   ],
 });
 
-// State
 const step = ref(0);
 const steps = ["Upload", "Mapeamento", "Resultado"];
 const jsonData = ref(null);
 const jsonContainer = ref(null);
 const fileName = ref("");
 
-// Intermediate State for Mapping
 const rawHeaders = ref([]);
 const rawRows = ref([]); // Store raw values arrays
 const columnMap = ref([]); // Array of { original: string, key: string, enabled: boolean }
 
-// Methods
 const handleFileUpload = async (event) => {
   const file = event.target.files[0];
   if (!file) return;

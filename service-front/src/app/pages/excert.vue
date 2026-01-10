@@ -1,12 +1,13 @@
 <script setup>
-import {
-  ref,
-  reactive,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  nextTick,
-} from "vue";
+definePageMeta({
+  title: "Excert",
+  description: "Gerador de Certificados Automático",
+  icon: "ph:certificate-duotone",
+  menu: true,
+  tags: [],
+  badge: "Beta",
+  color: "bg-indigo-500",
+});
 
 useHead({
   title: "Gerador de Certificados - Dashboard",
@@ -32,29 +33,25 @@ useHead({
   ],
 });
 
-// State
 const step = ref(0);
 const steps = ["Excel", "Modelo", "Colunas", "Mapeamento", "Download"];
 const excelHeaders = ref([]);
 const excelRows = ref([]);
 const selectedFields = ref([]);
 
-// Logic State
 const currentFieldIndex = ref(0);
 const textObject = ref(null); // Current active field object (fabric object)
 const fieldConfigs = reactive({}); // Stores config: { header: { left, top, width, ... } }
 
-// Drawing
 const drawingRect = ref(null);
 const isDrawing = ref(false);
 const origX = ref(0);
 const origY = ref(0);
 
 const templateUrl = ref(null);
-// Canvas instance (non-reactive)
+
 let canvas = null;
 
-// Default props
 const currentProps = reactive({
   fontSize: 40,
   fill: "#000000",
@@ -65,14 +62,10 @@ const currentProps = reactive({
 const generatedImages = ref([]);
 const isGenerating = ref(false);
 
-// Responsive Canvas
 const canvasScale = ref(1);
 const canvasDimensions = reactive({ width: 800, height: 600 });
 const canvasStage = ref(null); // Template Ref
 let resizeObserver = null;
-
-// Computed
-const headers = computed(() => excelHeaders.value);
 
 const currentField = computed(() => {
   return selectedFields.value[currentFieldIndex.value] || "";
@@ -81,8 +74,6 @@ const currentField = computed(() => {
 const isLastField = computed(() => {
   return currentFieldIndex.value >= selectedFields.value.length - 1;
 });
-
-// Methods
 
 const handleFileUpload = async (event) => {
   const file = event.target.files[0];
