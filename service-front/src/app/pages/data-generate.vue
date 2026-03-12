@@ -96,6 +96,8 @@ const state = reactive({
         data.push(row);
       }
 
+      const keys = this.columns.map(c => c.name);
+      
       let baseName = faker.helpers.fake(this.outputFilename.trim()).replace(/[^a-z0-9_-]/gi, '_');
       if (!baseName) baseName = `faker_data_${new Date().getTime()}`;
       
