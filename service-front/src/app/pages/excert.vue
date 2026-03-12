@@ -1,3 +1,14 @@
+<!--
+TODO: Tornar exportação editável
+Alguns registros podem ficar estranhos por conta do tamanho de textoa muito grande, por exemplo.
+Fazer com que cada registro tenha os dados do mapeamento salvos, e colocar o json desse mapeamento
+dentro do arquivo zip. Assim, o cliente pode apenas subir esse mapeamento.json e editar o projeto.
+
+TODO: Tornar o preset configurável:
+Você pode baixar o preset do certificado para subi-lo depois, em vez de configurar tudo novamente.
+Este preset pode ser salvo como json e enviado dentro do arquivo zip, e tambem baixado separadamente.
+-->
+
 <script setup>
 definePageMeta({
   title: "Excert",
