@@ -27,8 +27,8 @@ const state = reactive({
   step: 0,
   steps: ["Definir Colunas", "Configurar Dados"],
   columns: [
-    { id: faker.helpers.fake('{{string.uuid}}'), name: "nome", type: "person.firstName" },
-    { id: faker.helpers.fake('{{string.uuid}}'), name: "email", type: "internet.email" },
+    { id: faker.helpers.fake('{{string.uuid}}'), name: "Nome", type: "person.firstName" },
+    { id: faker.helpers.fake('{{string.uuid}}'), name: "E-mail", type: "internet.email" },
 
   ],
   newColumnName: "",
@@ -52,7 +52,22 @@ const state = reactive({
   },
   
   columnRemove(id) {
-    this.columns = this.columns.filter(c => c.id !== id);
+    const index = this.columns.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.columns.splice(index, 1);
+    }
+  },
+  
+  columnClone(id) {
+    const index = this.columns.findIndex(c => c.id === id);
+    if (index !== -1) {
+      const colToCopy = this.columns[index];
+      this.columns.splice(index + 1, 0, {
+        id: faker.helpers.fake('{{string.uuid}}'),
+        name: colToCopy.name, // Copia exatamente o mesmo nome
+        type: colToCopy.type
+      });
+    }
   },
   
   nextStep() {
@@ -167,7 +182,7 @@ const fakerState = reactive({
   types: [
     // Pessoal
     { id: 'person.firstName', name: 'Primeiro Nome', template: '{{person.firstName}}' },
-    { id: 'person.lastName', name: 'Último Nome', template: '{{person.lastName}}' },
+    // { id: 'person.lastName', name: 'Último Nome', template: '{{person.lastName}}' },
     { id: 'person.fullName', name: 'Nome Completo', template: '{{person.fullName}}' },
     { id: 'person.jobTitle', name: 'Profissão', template: '{{person.jobTitle}}' },
     
@@ -407,11 +422,10 @@ const fakerState = reactive({
             <div v-else class="max-h-[50vh] overflow-y-auto custom-scrollbar">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-950/50 border-b border-slate-200 dark:border-slate-800">
-                    <th class="w-12"></th>
-                    <th class="py-3 px-4 text-xs font-bold uppercase tracking-widest text-slate-500">Nome da Coluna</th>
-                    <th class="py-3 px-4 text-xs font-bold uppercase tracking-widest text-slate-500">Tipo</th>
-                    <th class="w-16"></th>
+                  <tr class="text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-200 dark:border-slate-800">
+                    <th class="px-4 py-3">Nome da Coluna</th>
+                    <th class="px-4 py-3">Tipo</th>
+                    <th class="px-4 py-3 text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
@@ -420,19 +434,12 @@ const fakerState = reactive({
                     :key="col.id"
                     class="group hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
                   >
-                    <!-- Order/Drag handle placeholder -->
-                    <td class="px-4 py-3 text-center align-middle">
-                      <div class="inline-flex items-center justify-center w-8 h-8 text-slate-300 dark:text-slate-700 cursor-move">
-                        <icon name="ph:dots-six-vertical-bold" class="w-5 h-5" />
-                      </div>
-                    </td>
-                    
                     <!-- COLUMN NAME -->
                     <td class="px-4 py-3">
                       <input
                         v-model="col.name"
                         type="text"
-                        class="w-full bg-transparent border border-transparent hover:border-slate-200 dark:hover:border-slate-700 focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-500 rounded-sm px-3 py-2 text-sm font-bold text-slate-800 dark:text-slate-200 transition-colors outline-none"
+                        class="w-full h-10 pl-3 pr-8 text-sm bg-slate-50 dark:bg-slate-950 border-transparent focus:border-emerald-500 focus:ring-0 rounded-sm font-medium text-slate-800 dark:text-slate-200 outline-none"
                         placeholder="Nome da coluna"
                       />
                     </td>
@@ -455,13 +462,25 @@ const fakerState = reactive({
 
                     <!-- ACTIONS -->
                     <td class="px-4 py-3 text-right">
-                      <button
-                        @click="state.columnRemove(col.id)"
-                        class="p-2 text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
-                        title="Remover coluna"
-                      >
-                        <icon name="ph:trash-duotone" class="w-5 h-5" />
-                      </button>
+                      <div class="flex flex-row items-center justify-end gap-1 opacity-100 sm:opacity-50 sm:group-hover:opacity-100 transition-opacity">
+                        <!-- Botão Clonar -->
+                        <button
+                          @click="state.columnClone(col.id)"
+                          class="p-2 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-sm transition-colors"
+                          title="Clonar Coluna"
+                        >
+                          <icon name="ph:copy-duotone" class="w-4 h-4" />
+                        </button>
+                        
+                        <!-- Botão Deletar -->
+                        <button
+                          @click="state.columnRemove(col.id)"
+                          class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-sm transition-colors"
+                          title="Remover Coluna"
+                        >
+                          <icon name="ph:trash-duotone" class="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>

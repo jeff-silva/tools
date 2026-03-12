@@ -75,6 +75,12 @@ const isLastField = computed(() => {
   return currentFieldIndex.value >= selectedFields.value.length - 1;
 });
 
+const nextEmptyFieldIndex = computed(() => {
+  if (selectedFields.value.length === 0) return -1;
+  const currentMapped = Object.keys(fieldConfigs);
+  return selectedFields.value.findIndex(f => !currentMapped.includes(f));
+});
+
 const handleFileUpload = async (event) => {
   const file = event.target.files[0];
   if (!file) return;
@@ -441,6 +447,16 @@ const spawnTextbox = (config) => {
   });
 };
 
+const goToNextField = () => {
+  if (textObject.value) {
+    saveConfigForField(currentField.value);
+  }
+  const idx = nextEmptyFieldIndex.value;
+  if(idx !== -1) {
+    switchTab(idx);
+  }
+};
+
 const resetTextObject = () => {
   if (textObject.value) {
     canvas.remove(textObject.value);
@@ -754,7 +770,9 @@ onBeforeUnmount(() => {
           <button
             v-if="step === 3"
             @click="generateCertificates"
-            class="px-6 py-2 bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-emerald-700 transition-all rounded-sm flex items-center gap-2"
+            :disabled="Object.keys(fieldConfigs).length !== selectedFields.length"
+            class="px-6 py-2 bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-emerald-700 transition-all rounded-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-400 dark:disabled:bg-slate-700"
+            :title="Object.keys(fieldConfigs).length !== selectedFields.length ? 'Mapeie todos os campos antes de finalizar' : 'Gerar Certificados'"
           >
             <span>Finalizar</span>
             <svg
@@ -1175,12 +1193,16 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
 
-                <button
-                  @click="resetTextObject"
-                  class="w-full mt-4 py-2 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-xs font-bold uppercase hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors rounded-sm"
-                >
-                  Remover Mapping
-                </button>
+                <div class="pt-4 flex flex-col gap-2">
+                  <button
+                    v-if="nextEmptyFieldIndex !== -1 && textObject"
+                    @click="goToNextField"
+                    class="w-full py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 border border-slate-900 dark:border-white text-xs font-bold uppercase hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors rounded-sm flex items-center justify-center gap-2"
+                  >
+                    <span>Próximo Campo</span>
+                    →
+                  </button>
+                </div>
               </div>
             </div>
           </div>
