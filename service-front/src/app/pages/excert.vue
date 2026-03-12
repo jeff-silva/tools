@@ -903,7 +903,7 @@ onBeforeUnmount(() => {
           <div class="flex-1">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <label
-                v-for="(header, index) in headers"
+                v-for="(header, index) in excelHeaders"
                 :key="index"
                 class="relative p-4 border border-slate-200 dark:border-slate-800 cursor-pointer bg-white dark:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-600 transition-all group"
               >
